@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>JQuery Cycle Plugin - Example Slideshow</title>
+<style type="text/css">
+	body{text-align:center; padding-top:200px}
+	.container{width:500px; height:50px; overflow:hidden; margin:0 auto; border:5px solid pink}
+	.container div div{float:left}
+	.container div div img{width:100px; height:50px; float:left}
+</style>
+<!-- include jQuery library -->
+<script type="text/javascript" src="https://smartmarket.nonghyup.com/service/js/jquery-1.9.1.min.js"></script>
+
+<!--  initialize the slideshow when the DOM is ready -->
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	$('.container').slide();
+});
+
+
+$.fn.slide = function(){
+	return this.each(function(){
+		var $Box = $('.container'),
+			$moveTank = $Box.find('.move'),
+			$unit = 5,			
+			$width = 100,
+			$cnt = 0,
+			$lMove = $('#left'),
+			$rMove = $('#right'),
+			$auto = $('#auto'),
+			$event = 'click',
+		    $moveContent = "<div><a href='#'><img src='./images/slide-1.jpg' alt='' /></a></div><div><a href='#'><img src='./images/slide-2.jpg' alt='' /></a></div><div><a href='#'><img src='./images/slide-3.jpg' alt='' /></a></div><div><a href='#'><img src='./images/slide-4.jpg' alt='' /></a></div><div><a href='#'><img src='./images/slide-5.jpg' alt='' /></a></div><div><a href='#'><img src='./images/slide-1.jpg' alt='' /></a></div><div><a href='#'><img src='./images/slide-2.jpg' alt='' /></a></div><div><a href='#'><img src='./images/slide-3.jpg' alt='' /></a></div><div><a href='#'><img src='./images/slide-4.jpg' alt='' /></a></div><div><a href='#'><img src='./images/slide-5.jpg' alt='' /></a></div>"; 
+
+			$moveTank.css('width', 1000);			
+			$moveTank.append($moveContent);
+
+			function autoPlay(){				
+				$cnt++;
+				$moveTank.css({marginLeft:-$cnt});								
+				
+				if($cnt == 500){
+					$cnt = 0;
+			    }
+			};
+			
+			PlayAuto = setInterval(autoPlay, 20);
+
+			var _aLink = $moveTank.find('div a');
+
+			_aLink.on('mouseenter mouseleave focus blur', function(event){
+				if(event.type == 'mouseenter' || event.type == 'focus'){
+					clearInterval(PlayAuto);	
+					$auto.text('AUTO PLAY');
+				}else if(event.type == 'mouseleave' || event.type == 'blur'){
+					PlayAuto = setInterval(autoPlay, 20);
+					$auto.text('STOP PLAY');
+				}
+			});		
+	});
+};
+//]]>
+</script>
+</head>
+<body>
+	<div class="container">
+		<div class="move">	
+			<!-- content roop rolling -->
+		</div>
+	</div>	
+</body>
+</html>

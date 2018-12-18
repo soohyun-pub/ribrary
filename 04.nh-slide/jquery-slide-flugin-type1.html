@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>JQuery Cycle Plugin - Example Slideshow</title>
+<style type="text/css">
+	body{text-align:center; padding-top:200px}
+	.container{width:570px; height:270px; overflow:hidden; margin:0 auto}
+	.container div{float:left}
+</style>
+<!-- include jQuery library -->
+<script type="text/javascript" src="https://smartmarket.nonghyup.com/service/js/jquery-1.9.1.min.js"></script>
+
+<!--  initialize the slideshow when the DOM is ready -->
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	$('.container').slide();
+});
+
+
+$.fn.slide = function(){
+	return this.each(function(){
+		var $Box = $('.container'),
+			$moveTank = $Box.find('.move'),
+			$unit = $moveTank.find('div'),
+			$unitSize = $unit.length,
+			$lMove = $('#left'),
+			$rMove = $('#right'),
+			$auto = $('#auto'),
+			//$autoCk = $auto.text(),
+			$event = 'click',
+			$size = 570,
+			$cnt = 0;
+
+			$moveTank.css('width', $unitSize*'570'+'px');			
+			
+			function autoPlay(){				
+				if($cnt < $unitSize){					
+					$cnt++;										
+					$slideMotion();
+
+					if($cnt >= $unitSize-1){
+						$cnt = -1;
+					}
+				};
+			};
+			
+			PlayAuto = setInterval(autoPlay, 1000);
+			
+			$lMove.on($event, function(){
+				clearInterval(PlayAuto);
+				$cnt--;								
+				if($cnt < 0){
+					$cnt = $unitSize-1;
+				};
+				$slideMotion();
+				$auto.text('AUTO PLAY');
+			});
+			
+			$rMove.on($event, function(){
+				clearInterval(PlayAuto);
+				$cnt++;								
+				if($cnt >= $unitSize){
+					$cnt = 0;
+				};
+				$slideMotion();
+				$auto.text('AUTO PLAY');
+			});
+
+			$auto.on($event, function(){
+
+				if($auto.text() == 'STOP PLAY'){
+					clearInterval(PlayAuto);
+					$(this).text('AUTO PLAY');
+				}else{				
+					PlayAuto = setInterval(autoPlay, 1000);
+					$(this).text('STOP PLAY');
+				};
+			});
+
+			function $slideMotion(){
+				$result = $size*-$cnt;
+				$moveTank.animate({marginLeft:$result}, 'fast');				
+			};			
+	});
+};
+
+
+//]]>
+</script>
+</head>
+<body>
+	<div class="container">
+		<div class="move">	
+			<div><img src="./images/slide-1.jpg" alt="" /></div>
+			<div><img src="./images/slide-2.jpg" alt="" /></div>
+			<div><img src="./images/slide-3.jpg" alt="" /></div>
+			<div><img src="./images/slide-4.jpg" alt="" /></div>
+			<div><img src="./images/slide-5.jpg" alt="" /></div>
+		</div>
+	</div>	
+	<p>
+		<button type="button" id="left">LEFT</button>
+		<button type="button" id="right">RIGHT</button>
+		<button type="button" id="auto">STOP PLAY</button>
+	</p>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>JQuery Cycle Plugin - Example Slideshow</title>
+<style type="text/css">
+	body{text-align:center; padding-top:200px}
+	.container{width:570px; height:270px; overflow:hidden; margin:0 auto}
+	.container .move{position:relative; width:570px; height:270px; overflow:hidden}
+	.container .move div{position:absolute;}
+</style>
+<!-- include jQuery library -->
+<script type="text/javascript" src="https://smartmarket.nonghyup.com/service/js/jquery-1.9.1.min.js"></script>
+
+<!--  initialize the slideshow when the DOM is ready -->
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	$('.container').slide();
+});
+
+
+$.fn.slide = function(){
+	return this.each(function(){
+		var $Box = $('.container');
+		var $moveTank = $Box.find('.move');
+		var $unit = $moveTank.find('div');
+		var $cnt = 0;	
+		
+			$val = {};			
+
+			result = $.extend($val, {
+				first:-570,
+				second:0,
+				third:570				
+			});
+			
+			$moveTank.find('div').css({'left':$val.third});
+			$moveTank.find('div').eq(0).css({'left':$val.second});
+			
+			function autoPlay(){
+					$cnt++;
+					
+					$unit.eq($cnt).prev().prev().css({'left':$val.third});
+					$unit.eq($cnt).prev().animate({'left':$val.first}, 'slow');					
+					$unit.eq($cnt).animate({'left':$val.second}, 'slow');					
+					$unit.eq($cnt).next().css({'left':$val.third});
+					$unit.eq($cnt).next().next().css({'left':$val.third});					
+
+					if($cnt >= 5){
+						$cnt = 0;
+						$unit.eq(4).animate({'left':$val.first}, 'slow');					
+						$unit.eq(0).animate({'left':$val.second}, 'slow');					
+					};
+			};
+			
+			PlayAuto = setInterval(autoPlay, 2000);
+	});			
+};
+
+
+//]]>
+</script>
+</head>
+<body>
+	<div class="container">
+		<div class="move">	
+			<div><a href='#'><img src='./images/slide-1.jpg' alt='' /></a></div>
+			<div><a href='#'><img src='./images/slide-2.jpg' alt='' /></a></div>
+			<div><a href='#'><img src='./images/slide-3.jpg' alt='' /></a></div>
+			<div><a href='#'><img src='./images/slide-4.jpg' alt='' /></a></div>
+			<div><a href='#'><img src='./images/slide-5.jpg' alt='' /></a></div>		
+		</div>
+	</div>		
+</body>
+</html>
